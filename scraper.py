@@ -19,6 +19,16 @@ def find_urls(webpage_text):
     return u
 
 
+def find_imgs(webpage_text):
+    """Finds all urls"""
+    s = []
+    soup = BeautifulSoup(webpage_text.text, 'html.parser')
+    for img in soup.find_all('img'):
+        src = img.get('src')
+        s.append(src)
+    return s
+
+
 def find_emails(webpage_text):
     """Finds all emails"""
     e = []
@@ -56,9 +66,10 @@ def main(args):
         sys.exit(1)
 
     parsed_args = parser.parse_args(args)
-    
+
     webpage_text = requests.get(parsed_args.webpage)
 
+    # PRINTS OUT URLS
     print"""
     URLs:
 
@@ -67,6 +78,16 @@ def main(args):
     for url in found_urls:
         print(url)
 
+    # PRINTS OUT IMGS
+    print"""
+    IMGs:
+
+    """
+    found_imgs = find_imgs(webpage_text)
+    for img in found_imgs:
+        print(img)
+
+    # PRINTS OUT EMAILS
     print"""
     Emails:
 
@@ -75,6 +96,7 @@ def main(args):
     for email in found_emails:
         print(email)
 
+    # PRINTS OUT PHONE NUMBERS
     print"""
     Phone Numbers:
 
